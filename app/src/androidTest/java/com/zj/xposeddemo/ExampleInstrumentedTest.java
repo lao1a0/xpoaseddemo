@@ -1,4 +1,4 @@
-package com.example.xposeddemo;
+package com.zj.xposeddemo;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.xposeddemo", appContext.getPackageName());
+        assertEquals("com.zj.xposeddemo", appContext.getPackageName());
     }
 }

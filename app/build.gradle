@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.xposeddemo'
+    namespace 'com.zj.xposeddemo'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.xposeddemo"
+        applicationId "com.zj.xposeddemo"
         minSdk 21
         targetSdk 34
         versionCode 1

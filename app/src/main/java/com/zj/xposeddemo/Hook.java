@@ -1,11 +1,8 @@
-package com.example.xposeddemo;
-import android.app.Application;
-import android.content.Context;
+package com.zj.xposeddemo;
 import android.util.Log;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
@@ -16,16 +13,15 @@ public class Hook implements IXposedHookLoadPackage {
         if(loadPackageParam.packageName.equals("com.zj.wuaipojie")) {
             return;
         }
-        XposedHelpers.findAndHookConstructor("com.zj.wuaipojie.Demo", loadPackageParam.classLoader, new XC_MethodHook() {
-            @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                super.beforeHookedMethod(param);
-                String a = "123";
-                param.args[0] = a;
-            }
+        Class clazz = XposedHelpers.findClass("android.view.View", loadPackageParam.classLoader);
+        XposedBridge.hookAllMethods(clazz, "performClick", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
+                Object listenerInfoObject = XposedHelpers.getObjectField(param.thisObject, "mListenerInfo");
+                Object mOnClickListenerObject = XposedHelpers.getObjectField(listenerInfoObject, "mOnClickListener");
+                String callbackType = mOnClickListenerObject.getClass().getName();
+                Log.d("zj2595",callbackType);
             }
         });
     }

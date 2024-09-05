@@ -1,4 +1,4 @@
-package com.example.xposeddemo;
+package com.zj.xposeddemo;
 
 import org.junit.Test;
 
