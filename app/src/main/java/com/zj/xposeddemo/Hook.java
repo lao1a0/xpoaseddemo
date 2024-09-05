@@ -1,9 +1,8 @@
 package com.zj.xposeddemo;
-import android.util.Log;
-
+import android.os.Bundle;
+import android.view.View;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -13,16 +12,14 @@ public class Hook implements IXposedHookLoadPackage {
         if(loadPackageParam.packageName.equals("com.zj.wuaipojie")) {
             return;
         }
-        Class clazz = XposedHelpers.findClass("android.view.View", loadPackageParam.classLoader);
-        XposedBridge.hookAllMethods(clazz, "performClick", new XC_MethodHook() {
-            @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                super.afterHookedMethod(param);
-                Object listenerInfoObject = XposedHelpers.getObjectField(param.thisObject, "mListenerInfo");
-                Object mOnClickListenerObject = XposedHelpers.getObjectField(listenerInfoObject, "mOnClickListener");
-                String callbackType = mOnClickListenerObject.getClass().getName();
-                Log.d("zj2595",callbackType);
-            }
-        });
+        XposedHelpers.findAndHookMethod("com.zj.wuaipojie.ui.ChallengeSixth", loadPackageParam.classLoader,
+                "onCreate", Bundle.class, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        super.afterHookedMethod(param);
+                        View img = (View)XposedHelpers.callMethod(param.thisObject,"findViewById", 0x7f0800de);// 控件的id
+                        img.setVisibility(View.GONE);
+                    }
+                });
     }
 }
